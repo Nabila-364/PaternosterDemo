@@ -1,0 +1,25 @@
+@model IEnumerable<PaternosterDemo.Models.Part>
+
+<h1>Onderdelen</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Artikelnummer</th>
+            <th>Naam</th>
+            <th>Beschrijving</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var part in Model)
+    {
+        <tr>
+            <td>@part.ArticleNumber</td>
+            <td>@part.Name</td>
+            <td>@part.Description</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-controller="Parts" asp-action="Create">Nieuw onderdeel toevoegen</a>

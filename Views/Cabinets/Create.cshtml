@@ -1,0 +1,21 @@
+@model PaternosterDemo.Models.Cabinet
+
+<h1>Nieuwe kast toevoegen</h1>
+
+<form asp-action="Create" method="post">
+    <div>
+        <label>Kastnummer</label>
+        <input asp-for="CabinetNumber" />
+    </div>
+    <div>
+        <label>Locatie</label>
+        <input asp-for="Location" />
+    </div>
+    <div>
+        <label>Capaciteit</label>
+        <input asp-for="Capacity" />
+    </div>
+    <button type="submit">Opslaan</button>
+</form>
+
+<a asp-controller="Cabinets" asp-action="Index">Terug naar lijst</a>

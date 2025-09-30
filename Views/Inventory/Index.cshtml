@@ -1,0 +1,25 @@
+@model IEnumerable<PaternosterDemo.Models.Inventory>
+
+<h1>Voorraad</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Onderdeel</th>
+            <th>Kast</th>
+            <th>Aantal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Part.Name</td>
+                <td>@item.Cabinet.CabinetNumber</td>
+                <td>@item.Quantity</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Inventory" asp-action="Create" class="btn btn-primary">Nieuwe voorraad toevoegen</a>

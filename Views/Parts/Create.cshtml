@@ -1,0 +1,35 @@
+@model PaternosterDemo.Models.Part
+
+<h1>Nieuw onderdeel toevoegen</h1>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div>
+        <label asp-for="ArticleNumber"></label>
+        <input asp-for="ArticleNumber" />
+        <span asp-validation-for="ArticleNumber" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Description"></label>
+        <input asp-for="Description" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <button type="submit">Opslaan</button>
+</form>
+
+<div>
+    <a asp-controller="Parts" asp-action="Index">Terug naar lijst</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

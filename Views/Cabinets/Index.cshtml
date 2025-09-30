@@ -1,0 +1,25 @@
+@model IEnumerable<PaternosterDemo.Models.Cabinet>
+
+<h1>Kasten</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Kastnummer</th>
+            <th>Locatie</th>
+            <th>Capaciteit</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var c in Model)
+    {
+        <tr>
+            <td>@c.CabinetNumber</td>
+            <td>@c.Location</td>
+            <td>@c.Capacity</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-controller="Cabinets" asp-action="Create">Nieuwe kast toevoegen</a>
