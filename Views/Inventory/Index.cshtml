@@ -1,6 +1,10 @@
 @model IEnumerable<PaternosterDemo.Models.Inventory>
 
-<h1>Voorraad</h1>
+<h1>Voorraad overzicht</h1>
+
+<p>
+    <a asp-action="Create">Nieuwe voorraad toevoegen</a>
+</p>
 
 <table class="table">
     <thead>
@@ -8,18 +12,20 @@
             <th>Onderdeel</th>
             <th>Kast</th>
             <th>Aantal</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Part.Name</td>
-                <td>@item.Cabinet.CabinetNumber</td>
-                <td>@item.Quantity</td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>@item.Part?.Name</td>
+            <td>@item.Cabinet?.CabinetNumber</td>
+            <td>@item.Quantity</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.InventoryId">Bewerken</a> |
+                <a asp-action="Delete" asp-route-id="@item.InventoryId">Verwijderen</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>
-
-<a asp-controller="Inventory" asp-action="Create" class="btn btn-primary">Nieuwe voorraad toevoegen</a>

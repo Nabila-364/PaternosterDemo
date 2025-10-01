@@ -17,65 +17,73 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = PaternosterDemo
 build_property.RootNamespace = PaternosterDemo
-build_property.ProjectDir = C:\Users\nkall\PaternosterDemo\
+build_property.ProjectDir = C:\Users\nkall\source\repos\PaternosterDemo\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\nkall\PaternosterDemo
+build_property.MSBuildProjectDirectory = C:\Users\nkall\source\repos\PaternosterDemo
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/nkall/PaternosterDemo/Views/Cabinets/Create.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Cabinets/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FiaW5ldHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/Cabinets/Index.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Cabinets/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FiaW5ldHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/Home/Index.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/Home/Privacy.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/Inventory/Create.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Inventory/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/Inventory/Index.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Inventory/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Inventory/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Inventory/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/Parts/Create.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Parts/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/Parts/Index.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Parts/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/Shared/Error.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/_ViewImports.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/_ViewStart.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nkall/PaternosterDemo/Views/Shared/_Layout.cshtml]
+[C:/Users/nkall/source/repos/PaternosterDemo/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-qdiz2k2xfa

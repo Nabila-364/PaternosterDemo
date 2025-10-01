@@ -1,0 +1,36 @@
+@model PaternosterDemo.Models.Inventory
+
+<h1>Voorraad bewerken</h1>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="InventoryId" />
+
+    <div>
+        <label>Onderdeel</label>
+        <select asp-for="PartId" asp-items="@(ViewData["Parts"] as SelectList)">
+            <option value="">-- Kies onderdeel --</option>
+        </select>
+        <span asp-validation-for="PartId" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Kast</label>
+        <select asp-for="CabinetId" asp-items="@(ViewData["Cabinets"] as SelectList)">
+            <option value="">-- Kies kast --</option>
+        </select>
+        <span asp-validation-for="CabinetId" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Aantal</label>
+        <input asp-for="Quantity" type="number" min="1" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+
+    <button type="submit">Opslaan</button>
+</form>
+
+<div>
+    <a asp-action="Index">Terug naar lijst</a>
+</div>

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uPSV34yDl0I=",
+  "dgSpecHash": "eMSkTx0JZv8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\nkall\\PaternosterDemo\\PaternosterDemo.csproj",
+  "projectFilePath": "C:\\Users\\nkall\\source\\repos\\PaternosterDemo\\PaternosterDemo.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nkall\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\nkall\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

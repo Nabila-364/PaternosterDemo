@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nkall\\PaternosterDemo\\PaternosterDemo.csproj": {}
+    "C:\\Users\\nkall\\source\\repos\\PaternosterDemo\\PaternosterDemo.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nkall\\PaternosterDemo\\PaternosterDemo.csproj": {
+    "C:\\Users\\nkall\\source\\repos\\PaternosterDemo\\PaternosterDemo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nkall\\PaternosterDemo\\PaternosterDemo.csproj",
+        "projectUniqueName": "C:\\Users\\nkall\\source\\repos\\PaternosterDemo\\PaternosterDemo.csproj",
         "projectName": "PaternosterDemo",
-        "projectPath": "C:\\Users\\nkall\\PaternosterDemo\\PaternosterDemo.csproj",
+        "projectPath": "C:\\Users\\nkall\\source\\repos\\PaternosterDemo\\PaternosterDemo.csproj",
         "packagesPath": "C:\\Users\\nkall\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nkall\\PaternosterDemo\\obj\\",
+        "outputPath": "C:\\Users\\nkall\\source\\repos\\PaternosterDemo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

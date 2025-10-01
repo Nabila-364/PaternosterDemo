@@ -28,15 +28,7 @@ namespace PaternosterDemo.Controllers
         // GET: Inventory/Create
         public IActionResult Create()
         {
-            var parts = _context.Parts.ToList();
-            var cabinets = _context.Cabinets.ToList();
-
-            // Debug output
-            Console.WriteLine($"Parts count: {parts.Count}, Cabinets count: {cabinets.Count}");
-
-            ViewData["Parts"] = new SelectList(parts, "PartId", "Name");
-            ViewData["Cabinets"] = new SelectList(cabinets, "CabinetId", "CabinetNumber");
-
+            LoadDropdowns();
             return View();
         }
 
@@ -49,25 +41,90 @@ namespace PaternosterDemo.Controllers
             {
                 _context.Inventories.Add(inventory);
                 await _context.SaveChangesAsync();
-
-                // Debug: bevestiging
-                Console.WriteLine($"Inventory toegevoegd: PartId={inventory.PartId}, CabinetId={inventory.CabinetId}, Quantity={inventory.Quantity}");
-
                 return RedirectToAction(nameof(Index));
             }
-            else
+
+            LoadDropdowns();
+            return View(inventory);
+        }
+
+        // GET: Inventory/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var inventory = await _context.Inventories.FindAsync(id);
+            if (inventory == null) return NotFound();
+
+            LoadDropdowns();
+            return View(inventory);
+        }
+
+        // POST: Inventory/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Inventory inventory)
+        {
+            if (id != inventory.InventoryId) return NotFound();
+
+            if (ModelState.IsValid)
             {
-                // Log ModelState errors
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                try
                 {
-                    Console.WriteLine($"ModelState fout: {error.ErrorMessage}");
+                    _context.Update(inventory);
+                    await _context.SaveChangesAsync();
                 }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!InventoryExists(inventory.InventoryId))
+                        return NotFound();
+                    else
+                        throw;
+                }
+                return RedirectToAction(nameof(Index));
             }
 
-            // Herlaad dropdowns
+            LoadDropdowns();
+            return View(inventory);
+        }
+
+        // GET: Inventory/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var inventory = await _context.Inventories
+                                          .Include(i => i.Part)
+                                          .Include(i => i.Cabinet)
+                                          .FirstOrDefaultAsync(i => i.InventoryId == id);
+            if (inventory == null) return NotFound();
+
+            return View(inventory);
+        }
+
+        // POST: Inventory/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var inventory = await _context.Inventories.FindAsync(id);
+            if (inventory != null)
+            {
+                _context.Inventories.Remove(inventory);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool InventoryExists(int id)
+        {
+            return _context.Inventories.Any(e => e.InventoryId == id);
+        }
+
+        private void LoadDropdowns()
+        {
             ViewData["Parts"] = new SelectList(_context.Parts.ToList(), "PartId", "Name");
             ViewData["Cabinets"] = new SelectList(_context.Cabinets.ToList(), "CabinetId", "CabinetNumber");
-            return View(inventory);
         }
     }
 }
