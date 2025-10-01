@@ -1,25 +1,31 @@
 @model IEnumerable<PaternosterDemo.Models.Cabinet>
 
-<h1>Kasten</h1>
+<h1>Kast overzicht</h1>
 
-<table>
+<p>
+    <a asp-action="Create">Nieuwe kast toevoegen</a>
+</p>
+
+<table class="table">
     <thead>
         <tr>
             <th>Kastnummer</th>
             <th>Locatie</th>
             <th>Capaciteit</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var c in Model)
-    {
+@foreach (var item in Model) {
         <tr>
-            <td>@c.CabinetNumber</td>
-            <td>@c.Location</td>
-            <td>@c.Capacity</td>
+            <td>@item.CabinetNumber</td>
+            <td>@item.Location</td>
+            <td>@item.Capacity</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CabinetId">Bewerken</a> |
+                <a asp-action="Delete" asp-route-id="@item.CabinetId">Verwijderen</a>
+            </td>
         </tr>
-    }
+}
     </tbody>
 </table>
-
-<a asp-controller="Cabinets" asp-action="Create">Nieuwe kast toevoegen</a>

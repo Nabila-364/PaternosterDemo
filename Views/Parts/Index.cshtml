@@ -1,25 +1,31 @@
 @model IEnumerable<PaternosterDemo.Models.Part>
 
-<h1>Onderdelen</h1>
+<h1>Onderdeel overzicht</h1>
 
-<table>
+<p>
+    <a asp-action="Create">Nieuw onderdeel toevoegen</a>
+</p>
+
+<table class="table">
     <thead>
         <tr>
             <th>Artikelnummer</th>
             <th>Naam</th>
             <th>Beschrijving</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var part in Model)
-    {
+@foreach (var item in Model) {
         <tr>
-            <td>@part.ArticleNumber</td>
-            <td>@part.Name</td>
-            <td>@part.Description</td>
+            <td>@item.ArticleNumber</td>
+            <td>@item.Name</td>
+            <td>@item.Description</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PartId">Bewerken</a> |
+                <a asp-action="Delete" asp-route-id="@item.PartId">Verwijderen</a>
+            </td>
         </tr>
-    }
+}
     </tbody>
 </table>
-
-<a asp-controller="Parts" asp-action="Create">Nieuw onderdeel toevoegen</a>

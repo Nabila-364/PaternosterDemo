@@ -1,9 +1,10 @@
 @model PaternosterDemo.Models.Cabinet
 
-<h1>Nieuwe kast toevoegen</h1>
+<h1>Kast bewerken</h1>
 
-<form asp-action="Create" method="post">
+<form asp-action="Edit" method="post">
     @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="CabinetId" />
 
     <div>
         <label asp-for="CabinetNumber"></label>

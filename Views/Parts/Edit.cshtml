@@ -1,9 +1,10 @@
 @model PaternosterDemo.Models.Part
 
-<h1>Nieuw onderdeel toevoegen</h1>
+<h1>Onderdeel bewerken</h1>
 
-<form asp-action="Create" method="post">
+<form asp-action="Edit" method="post">
     @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="PartId" />
 
     <div>
         <label asp-for="ArticleNumber"></label>

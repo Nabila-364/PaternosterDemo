@@ -1,0 +1,17 @@
+@model PaternosterDemo.Models.Part
+
+<h1>Onderdeel verwijderen</h1>
+
+<h3>Weet je zeker dat je dit onderdeel wilt verwijderen?</h3>
+
+<div>
+    <h4>@Model.Name (@Model.ArticleNumber)</h4>
+    <p>@Model.Description</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="PartId" />
+    <button type="submit">Verwijderen</button>
+    <a asp-action="Index">Annuleren</a>
+</form>
