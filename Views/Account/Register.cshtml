@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Registreren";
+}
+
+<h1>Registreren</h1>
+
+<form asp-action="Register" method="post">
+    @Html.AntiForgeryToken()
+
+    <div>
+        <label>Gebruikersnaam</label>
+        <input type="text" name="username" required />
+    </div>
+
+    <div>
+        <label>Wachtwoord</label>
+        <input type="password" name="password" required />
+    </div>
+
+    <div>
+        <label>Rol</label>
+        <select name="role" required>
+            <option value="">-- Kies rol --</option>
+            <option value="Admin">Admin</option>
+            <option value="Medewerker">Medewerker</option>
+        </select>
+    </div>
+
+    <button type="submit">Registreren</button>
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <p style="color:red">@ViewBag.Error</p>
+}
+
+<p>
+    <a asp-action="Login">Al een account? Log in</a>
+</p>

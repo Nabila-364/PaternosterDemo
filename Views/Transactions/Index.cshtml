@@ -1,0 +1,27 @@
+@model IEnumerable<PaternosterDemo.Models.Transaction>
+
+<h1>Transacties overzicht</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Onderdeel</th>
+            <th>Kast</th>
+            <th>Aantal gewijzigd</th>
+            <th>Tijdstip</th>
+            <th>Gebruiker</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Inventory?.Part?.Name</td>
+            <td>@item.Inventory?.Cabinet?.CabinetNumber</td>
+            <td>@item.QuantityChanged</td>
+            <td>@item.Timestamp.ToString("g")</td>
+            <td>@item.User?.Username</td>
+        </tr>
+    }
+    </tbody>
+</table>

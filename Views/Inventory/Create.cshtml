@@ -10,7 +10,6 @@
         <select asp-for="PartId" asp-items="@(ViewData["Parts"] as SelectList)">
             <option value="">-- Kies onderdeel --</option>
         </select>
-        <span asp-validation-for="PartId" class="text-danger"></span>
     </div>
 
     <div>
@@ -18,22 +17,16 @@
         <select asp-for="CabinetId" asp-items="@(ViewData["Cabinets"] as SelectList)">
             <option value="">-- Kies kast --</option>
         </select>
-        <span asp-validation-for="CabinetId" class="text-danger"></span>
     </div>
 
     <div>
         <label>Aantal</label>
         <input asp-for="Quantity" type="number" min="1" value="1"/>
-        <span asp-validation-for="Quantity" class="text-danger"></span>
     </div>
 
     <button type="submit">Opslaan</button>
 </form>
 
 <div>
-    <a asp-controller="Inventory" asp-action="Index">Terug naar lijst</a>
+    <a asp-action="Index">Terug naar lijst</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

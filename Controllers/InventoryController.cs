@@ -22,6 +22,9 @@ namespace PaternosterDemo.Controllers
                                            .Include(i => i.Part)
                                            .Include(i => i.Cabinet)
                                            .ToListAsync();
+
+            ViewBag.IsAdmin = HttpContext.Session.GetString("Role") == "Admin";
+
             return View(inventories);
         }
 
@@ -37,15 +40,15 @@ namespace PaternosterDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Inventory inventory)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Inventories.Add(inventory);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                LoadDropdowns();
+                return View(inventory);
             }
 
-            LoadDropdowns();
-            return View(inventory);
+            _context.Inventories.Add(inventory);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Inventory/Edit/5
@@ -66,26 +69,36 @@ namespace PaternosterDemo.Controllers
         public async Task<IActionResult> Edit(int id, Inventory inventory)
         {
             if (id != inventory.InventoryId) return NotFound();
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(inventory);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InventoryExists(inventory.InventoryId))
-                        return NotFound();
-                    else
-                        throw;
-                }
-                return RedirectToAction(nameof(Index));
+                LoadDropdowns();
+                return View(inventory);
             }
 
-            LoadDropdowns();
-            return View(inventory);
+            var original = await _context.Inventories.AsNoTracking().FirstOrDefaultAsync(i => i.InventoryId == id);
+            if (original == null) return NotFound();
+
+            int diff = inventory.Quantity - original.Quantity;
+
+            _context.Update(inventory);
+
+            if (diff != 0)
+            {
+                var userId = HttpContext.Session.GetInt32("UserId");
+                if (userId.HasValue)
+                {
+                    _context.Transactions.Add(new Transaction
+                    {
+                        InventoryId = inventory.InventoryId,
+                        UserId = userId.Value,
+                        QuantityChanged = diff,
+                        Timestamp = DateTime.Now
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Inventory/Delete/5
@@ -116,15 +129,15 @@ namespace PaternosterDemo.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool InventoryExists(int id)
-        {
-            return _context.Inventories.Any(e => e.InventoryId == id);
-        }
-
         private void LoadDropdowns()
         {
             ViewData["Parts"] = new SelectList(_context.Parts.ToList(), "PartId", "Name");
             ViewData["Cabinets"] = new SelectList(_context.Cabinets.ToList(), "CabinetId", "CabinetNumber");
+        }
+
+        private bool InventoryExists(int id)
+        {
+            return _context.Inventories.Any(e => e.InventoryId == id);
         }
     }
 }

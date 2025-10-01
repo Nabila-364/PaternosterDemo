@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PaternosterDemo.Models
@@ -16,8 +17,9 @@ namespace PaternosterDemo.Models
         [Range(0, int.MaxValue)]
         public int Quantity { get; set; }
 
-        // Navigatieproperties, maak nullable zodat EF Core ze niet als required valideert
         public Part? Part { get; set; }
         public Cabinet? Cabinet { get; set; }
+
+        public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }

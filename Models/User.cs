@@ -14,7 +14,7 @@ namespace PaternosterDemo.Models
         public string PasswordHash { get; set; } = null!;
 
         [Required]
-        public string Role { get; set; } = null!;
+        public string Role { get; set; } = "Medewerker";
 
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
