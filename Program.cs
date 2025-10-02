@@ -14,10 +14,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Sessie 30 minuten geldig
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+// Zorg dat IHttpContextAccessor geïnjecteerd kan worden in views/layout
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -33,7 +36,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSession(); // Session moet hier voor Authorization
+app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(
