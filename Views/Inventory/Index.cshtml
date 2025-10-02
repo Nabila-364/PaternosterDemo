@@ -16,20 +16,19 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
+@foreach (var item in Model) {
         <tr>
             <td>@item.Part?.Name</td>
             <td>@item.Cabinet?.CabinetNumber</td>
             <td>@item.Quantity</td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.InventoryId">Bewerken</a>
-                @if (ViewBag.IsAdmin == true)
+                @if (ViewBag.IsAdmin)
                 {
-                    <text> | <a asp-action="Delete" asp-route-id="@item.InventoryId">Verwijderen</a></text>
+                  <text> | <a asp-action="Delete" asp-route-id="@item.InventoryId">Verwijderen</a></text>
                 }
             </td>
         </tr>
-    }
+}
     </tbody>
 </table>
