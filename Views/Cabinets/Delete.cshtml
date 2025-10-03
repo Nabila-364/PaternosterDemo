@@ -1,8 +1,12 @@
 @model PaternosterDemo.Models.Cabinet
 
-<h1>Kast verwijderen</h1>
+@{
+    ViewData["Title"] = "Verwijder kast";
+}
 
-<h3>Weet je zeker dat je deze kast wilt verwijderen?</h3>
+<h1>Verwijder kast</h1>
+
+<p>Weet je zeker dat je deze kast wilt verwijderen?</p>
 
 <div>
     <h4>@Model.CabinetNumber</h4>
@@ -10,9 +14,9 @@
     <p>Capaciteit: @Model.Capacity</p>
 </div>
 
-<form asp-action="Delete" method="post">
+<form asp-action="DeleteConfirmed" method="post">
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="CabinetId" />
-    <button type="submit">Verwijderen</button>
-    <a asp-action="Index">Annuleren</a>
+    <button type="submit" class="btn btn-danger">Verwijderen</button>
+    <a class="btn btn-secondary" asp-action="Index">Annuleren</a>
 </form>

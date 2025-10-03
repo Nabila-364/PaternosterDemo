@@ -9,16 +9,15 @@
     <title>@ViewData["Title"] - PaternosterDemo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PaternosterDemo.styles.css" asp-append-version="true" />
 </head>
 <body>
     @{
-        // null-safe ophalen van session
+        // Veilig ophalen van session
         var session = HttpContextAccessor?.HttpContext?.Session;
         int? sessionUserId = session?.GetInt32("UserId");
         bool isLoggedIn = sessionUserId.HasValue;
-        var username = session?.GetString("Username") ?? string.Empty;
-        var role = session?.GetString("Role") ?? string.Empty;
+        var username = session?.GetString("Username") ?? "";
+        var role = session?.GetString("Role") ?? "";
     }
 
     <header>
@@ -31,7 +30,6 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="mainNavbar">
-                    <!-- Linkerkant -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
@@ -41,7 +39,6 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Transactions" asp-action="Index">Transacties</a></li>
                     </ul>
 
-                    <!-- Rechterkant (login/logout) -->
                     <ul class="navbar-nav">
                         @if (!isLoggedIn)
                         {

@@ -1,24 +1,37 @@
 @model PaternosterDemo.Models.Inventory
 
-<h2>Voorraad aanpassen</h2>
+@{
+    ViewData["Title"] = "Bewerk voorraad";
+}
+
+<h1>Bewerk voorraad</h1>
 
 <form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
     <input type="hidden" asp-for="InventoryId" />
 
-    <div>
+    <div class="mb-3">
         <label>Onderdeel</label>
-        <select asp-for="PartId" asp-items="ViewBag.Parts"></select>
+        <select asp-for="PartId" class="form-select" asp-items="@(ViewData["Parts"] as SelectList)"></select>
+        <span asp-validation-for="PartId" class="text-danger"></span>
     </div>
 
-    <div>
+    <div class="mb-3">
         <label>Kast</label>
-        <select asp-for="CabinetId" asp-items="ViewBag.Cabinets"></select>
+        <select asp-for="CabinetId" class="form-select" asp-items="@(ViewData["Cabinets"] as SelectList)"></select>
+        <span asp-validation-for="CabinetId" class="text-danger"></span>
     </div>
 
-    <div>
+    <div class="mb-3">
         <label>Aantal</label>
-        <input asp-for="Quantity" type="number" min="0" />
+        <input asp-for="Quantity" type="number" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
     </div>
 
-    <button type="submit">Opslaan</button>
+    <button type="submit" class="btn btn-primary">Opslaan</button>
+    <a class="btn btn-secondary" asp-action="Index">Annuleren</a>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,34 +1,38 @@
 @model IEnumerable<PaternosterDemo.Models.Inventory>
 
+@{
+    ViewData["Title"] = "Voorraad overzicht";
+    bool isAdmin = ViewBag.IsAdmin ?? false;
+}
+
 <h1>Voorraad overzicht</h1>
 
-<p>
-    <a asp-action="Create">Nieuwe voorraad toevoegen</a>
-</p>
+<a class="btn btn-success mb-3" asp-action="Create">Nieuwe voorraad</a>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Onderdeel</th>
             <th>Kast</th>
             <th>Aantal</th>
-            <th></th>
+            <th>Acties</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>@item.Part?.Name</td>
             <td>@item.Cabinet?.CabinetNumber</td>
             <td>@item.Quantity</td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.InventoryId">Bewerken</a>
-                @if (ViewBag.IsAdmin)
+                <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.InventoryId">Bewerk</a>
+                @if(isAdmin)
                 {
-                  <text> | <a asp-action="Delete" asp-route-id="@item.InventoryId">Verwijderen</a></text>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.InventoryId">Verwijder</a>
                 }
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

@@ -3,36 +3,97 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PaternosterDemo.Data;
 using PaternosterDemo.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PaternosterDemo.Controllers
 {
     public class InventoryController : Controller
     {
         private readonly AppDbContext _context;
-
-        public InventoryController(AppDbContext context)
-        {
-            _context = context;
-        }
+        public InventoryController(AppDbContext context) => _context = context;
 
         // GET: Inventory
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search)
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue) return RedirectToAction("Login", "Account");
+
             ViewBag.IsAdmin = HttpContext.Session.GetString("Role") == "Admin";
 
-            var inventories = await _context.Inventories
-                                           .Include(i => i.Part)
-                                           .Include(i => i.Cabinet)
-                                           .ToListAsync();
-            return View(inventories);
+            var query = _context.Inventories
+                                .Include(i => i.Part)
+                                .Include(i => i.Cabinet)
+                                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(i =>
+                    (i.Part != null && i.Part.Name != null && i.Part.Name.Contains(search)) ||
+                    (i.Part != null && i.Part.ArticleNumber != null && i.Part.ArticleNumber.Contains(search))
+                );
+            }
+
+            var list = await query.ToListAsync();
+
+            // totaal per part (BR17)
+            ViewBag.TotalPerPart = list.GroupBy(i => i.PartId)
+                                       .ToDictionary(g => g.Key, g => g.Sum(i => i.Quantity));
+
+            return View(list);
         }
 
-        // GET: Inventory/Edit/5
+        // GET: Inventory/Create (logged-in users can add stock)
+        public IActionResult Create()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue) return RedirectToAction("Login", "Account");
+
+            LoadDropdowns();
+            return View();
+        }
+
+        // POST: Inventory/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Inventory inventory)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue) return RedirectToAction("Login", "Account");
+
+            if (ModelState.IsValid)
+            {
+                _context.Inventories.Add(inventory);
+
+                // log put (positive)
+                _context.Transactions.Add(new Transaction
+                {
+                    InventoryId = inventory.InventoryId,
+                    UserId = userId.Value,
+                    QuantityChanged = inventory.Quantity,
+                    Timestamp = System.DateTime.Now
+                });
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            LoadDropdowns();
+            return View(inventory);
+        }
+
+        // GET: Inventory/Edit/5 (logged-in users can adjust quantities)
         public async Task<IActionResult> Edit(int? id)
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue) return RedirectToAction("Login", "Account");
+
             if (id == null) return NotFound();
 
-            var inventory = await _context.Inventories.FindAsync(id);
+            var inventory = await _context.Inventories
+                                          .Include(i => i.Part)
+                                          .Include(i => i.Cabinet)
+                                          .FirstOrDefaultAsync(i => i.InventoryId == id);
             if (inventory == null) return NotFound();
 
             LoadDropdowns();
@@ -44,39 +105,33 @@ namespace PaternosterDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Inventory inventory)
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue) return RedirectToAction("Login", "Account");
+
             if (id != inventory.InventoryId) return NotFound();
 
             if (ModelState.IsValid)
             {
-                try
+                var original = await _context.Inventories.AsNoTracking()
+                                    .FirstOrDefaultAsync(i => i.InventoryId == id);
+                if (original == null) return NotFound();
+
+                int diff = inventory.Quantity - original.Quantity;
+
+                _context.Update(inventory);
+
+                if (diff != 0)
                 {
-                    var original = await _context.Inventories.AsNoTracking().FirstAsync(i => i.InventoryId == id);
-                    int diff = inventory.Quantity - original.Quantity;
-
-                    _context.Update(inventory);
-
-                    // TRANSACTIE LOGGEN
-                    var userId = HttpContext.Session.GetInt32("UserId");
-                    if (userId.HasValue && diff != 0)
+                    _context.Transactions.Add(new Transaction
                     {
-                        _context.Transactions.Add(new Transaction
-                        {
-                            InventoryId = inventory.InventoryId,
-                            UserId = userId.Value,
-                            QuantityChanged = diff,
-                            Timestamp = DateTime.Now
-                        });
-                    }
+                        InventoryId = inventory.InventoryId,
+                        UserId = userId.Value,
+                        QuantityChanged = diff,
+                        Timestamp = System.DateTime.Now
+                    });
+                }
 
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InventoryExists(inventory.InventoryId))
-                        return NotFound();
-                    else
-                        throw;
-                }
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
@@ -84,15 +139,53 @@ namespace PaternosterDemo.Controllers
             return View(inventory);
         }
 
-        private bool InventoryExists(int id)
+        // GET: Inventory/Delete/5 (Admin only)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return _context.Inventories.Any(e => e.InventoryId == id);
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue) return RedirectToAction("Login", "Account");
+            if (HttpContext.Session.GetString("Role") != "Admin") return RedirectToAction("AccessDenied", "Account");
+
+            if (id == null) return NotFound();
+            var inventory = await _context.Inventories
+                                          .Include(i => i.Part)
+                                          .Include(i => i.Cabinet)
+                                          .FirstOrDefaultAsync(i => i.InventoryId == id);
+            if (inventory == null) return NotFound();
+            return View(inventory);
+        }
+
+        // POST: Inventory/DeleteConfirmed/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue) return RedirectToAction("Login", "Account");
+            if (HttpContext.Session.GetString("Role") != "Admin") return RedirectToAction("AccessDenied", "Account");
+
+            var inventory = await _context.Inventories.FindAsync(id);
+            if (inventory != null)
+            {
+                // log negative transaction
+                _context.Transactions.Add(new Transaction
+                {
+                    InventoryId = inventory.InventoryId,
+                    UserId = userId.Value,
+                    QuantityChanged = -inventory.Quantity,
+                    Timestamp = System.DateTime.Now
+                });
+
+                _context.Inventories.Remove(inventory);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         private void LoadDropdowns()
         {
-            ViewData["Parts"] = new SelectList(_context.Parts.ToList(), "PartId", "Name");
-            ViewData["Cabinets"] = new SelectList(_context.Cabinets.ToList(), "CabinetId", "CabinetNumber");
+            ViewData["Parts"] = new SelectList(_context.Parts.AsNoTracking().ToList(), "PartId", "Name");
+            ViewData["Cabinets"] = new SelectList(_context.Cabinets.AsNoTracking().ToList(), "CabinetId", "CabinetNumber");
         }
     }
 }

@@ -1,17 +1,21 @@
 @model PaternosterDemo.Models.Part
 
-<h1>Onderdeel verwijderen</h1>
+@{
+    ViewData["Title"] = "Verwijder onderdeel";
+}
 
-<h3>Weet je zeker dat je dit onderdeel wilt verwijderen?</h3>
+<h1>Verwijder onderdeel</h1>
+
+<p>Weet je zeker dat je dit onderdeel wilt verwijderen?</p>
 
 <div>
     <h4>@Model.Name (@Model.ArticleNumber)</h4>
     <p>@Model.Description</p>
 </div>
 
-<form asp-action="Delete" method="post">
+<form asp-action="DeleteConfirmed" method="post">
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="PartId" />
-    <button type="submit">Verwijderen</button>
-    <a asp-action="Index">Annuleren</a>
+    <button type="submit" class="btn btn-danger">Verwijderen</button>
+    <a class="btn btn-secondary" asp-action="Index">Annuleren</a>
 </form>

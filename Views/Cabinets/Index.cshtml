@@ -1,31 +1,36 @@
 @model IEnumerable<PaternosterDemo.Models.Cabinet>
 
-<h1>Kast overzicht</h1>
+@{
+    ViewData["Title"] = "Kasten";
+}
+
+<h1>Kasten</h1>
 
 <p>
-    <a asp-action="Create">Nieuwe kast toevoegen</a>
+    <a class="btn btn-success" asp-action="Create">Nieuwe kast</a>
 </p>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Kastnummer</th>
             <th>Locatie</th>
             <th>Capaciteit</th>
-            <th></th>
+            <th>Acties</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>@item.CabinetNumber</td>
-            <td>@item.Location</td>
-            <td>@item.Capacity</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CabinetId">Bewerken</a> |
-                <a asp-action="Delete" asp-route-id="@item.CabinetId">Verwijderen</a>
-            </td>
-        </tr>
-}
+        @foreach (var cabinet in Model)
+        {
+            <tr>
+                <td>@cabinet.CabinetNumber</td>
+                <td>@cabinet.Location</td>
+                <td>@cabinet.Capacity</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@cabinet.CabinetId">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@cabinet.CabinetId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
