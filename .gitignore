@@ -1,0 +1,52 @@
+# Build output
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio files
+.vs/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+# NuGet v3 folders
+**/packages/*
+
+# Logs
+*.log
+
+# Database
+*.mdf
+*.ldf
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Publish
+*.pubxml
+*.publishproj
+PublishProfiles/
+
+# Generated files
+Generated\ Files/
+
+# Web stuff
+wwwroot/lib/
+wwwroot/dist/
+wwwroot/node_modules/
+node_modules/
+
+# JetBrains Rider
+.idea/
+
+# Mac / Linux stuff
+.DS_Store
+*.swp
