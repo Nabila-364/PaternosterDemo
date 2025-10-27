@@ -15,28 +15,18 @@ namespace PaternosterDemo.Controllers
         // GET: Parts
         public async Task<IActionResult> Index()
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue) return RedirectToAction("Login", "Account");
             ViewBag.IsAdmin = HttpContext.Session.GetString("Role") == "Admin";
+
             return View(await _context.Parts.ToListAsync());
         }
 
-        // GET: Parts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null) return NotFound();
-            var part = await _context.Parts.FirstOrDefaultAsync(p => p.PartId == id);
-            if (part == null) return NotFound();
-            return View(part);
-        }
-
-        // GET: Parts/Create (Admin only)
+        // GET: Parts/Create
         public IActionResult Create()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             if (!userId.HasValue) return RedirectToAction("Login", "Account");
-
-            if (HttpContext.Session.GetString("Role") != "Admin")
-                return RedirectToAction("AccessDenied", "Account");
-
             return View();
         }
 
@@ -45,31 +35,24 @@ namespace PaternosterDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Part part)
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (!userId.HasValue) return RedirectToAction("Login", "Account");
-            if (HttpContext.Session.GetString("Role") != "Admin")
-                return RedirectToAction("AccessDenied", "Account");
+            if (!ModelState.IsValid) return View(part);
 
-            if (ModelState.IsValid)
-            {
-                _context.Parts.Add(part);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(part);
+            _context.Add(part);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Parts/Edit/5 (Admin only)
+        // GET: Parts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             if (!userId.HasValue) return RedirectToAction("Login", "Account");
-            if (HttpContext.Session.GetString("Role") != "Admin")
-                return RedirectToAction("AccessDenied", "Account");
 
             if (id == null) return NotFound();
+
             var part = await _context.Parts.FindAsync(id);
             if (part == null) return NotFound();
+
             return View(part);
         }
 
@@ -78,28 +61,12 @@ namespace PaternosterDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Part part)
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (!userId.HasValue) return RedirectToAction("Login", "Account");
-            if (HttpContext.Session.GetString("Role") != "Admin")
-                return RedirectToAction("AccessDenied", "Account");
-
             if (id != part.PartId) return NotFound();
+            if (!ModelState.IsValid) return View(part);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(part);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.Parts.Any(p => p.PartId == id)) return NotFound();
-                    else throw;
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(part);
+            _context.Update(part);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Parts/Delete/5 (Admin only)
@@ -107,24 +74,24 @@ namespace PaternosterDemo.Controllers
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             if (!userId.HasValue) return RedirectToAction("Login", "Account");
-            if (HttpContext.Session.GetString("Role") != "Admin")
-                return RedirectToAction("AccessDenied", "Account");
+            if (HttpContext.Session.GetString("Role") != "Admin") return RedirectToAction("AccessDenied", "Account");
 
             if (id == null) return NotFound();
+
             var part = await _context.Parts.FirstOrDefaultAsync(p => p.PartId == id);
             if (part == null) return NotFound();
+
             return View(part);
         }
 
-        // POST: Parts/DeleteConfirmed/5
+        // POST: Parts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             if (!userId.HasValue) return RedirectToAction("Login", "Account");
-            if (HttpContext.Session.GetString("Role") != "Admin")
-                return RedirectToAction("AccessDenied", "Account");
+            if (HttpContext.Session.GetString("Role") != "Admin") return RedirectToAction("AccessDenied", "Account");
 
             var part = await _context.Parts.FindAsync(id);
             if (part != null)
@@ -132,6 +99,7 @@ namespace PaternosterDemo.Controllers
                 _context.Parts.Remove(part);
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Index));
         }
     }
