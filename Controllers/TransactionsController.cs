@@ -20,10 +20,10 @@ namespace PaternosterDemo.Controllers
         {
             var transactions = await _context.Transactions
                 .Include(t => t.Inventory)
-                    .ThenInclude(i => i!.Part)    // null-forgiving operator to suppress analyzer warning
+                    .ThenInclude(i => i.Part!)
                 .Include(t => t.Inventory)
-                    .ThenInclude(i => i!.Cabinet) // null-forgiving operator
-                .Include(t => t.User)
+                    .ThenInclude(i => i.Cabinet!)
+                .Include(t => t.User!)
                 .OrderByDescending(t => t.Timestamp)
                 .ToListAsync();
 
@@ -31,3 +31,4 @@ namespace PaternosterDemo.Controllers
         }
     }
 }
+

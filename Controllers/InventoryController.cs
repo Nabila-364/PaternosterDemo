@@ -36,14 +36,13 @@ namespace PaternosterDemo.Controllers
 
             var list = await query.ToListAsync();
 
-            // totaal per part (BR17)
             ViewBag.TotalPerPart = list.GroupBy(i => i.PartId)
                                        .ToDictionary(g => g.Key, g => g.Sum(i => i.Quantity));
 
             return View(list);
         }
 
-        // GET: Inventory/Create (logged-in users can add stock)
+        // GET: Inventory/Create
         public IActionResult Create()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
@@ -63,9 +62,11 @@ namespace PaternosterDemo.Controllers
 
             if (ModelState.IsValid)
             {
+                // Eerst Inventory toevoegen
                 _context.Inventories.Add(inventory);
+                await _context.SaveChangesAsync(); // InventoryId wordt nu gegenereerd
 
-                // log put (positive)
+                // Daarna Transaction toevoegen
                 _context.Transactions.Add(new Transaction
                 {
                     InventoryId = inventory.InventoryId,
@@ -82,7 +83,7 @@ namespace PaternosterDemo.Controllers
             return View(inventory);
         }
 
-        // GET: Inventory/Edit/5 (logged-in users can adjust quantities)
+        // GET: Inventory/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
@@ -155,7 +156,7 @@ namespace PaternosterDemo.Controllers
             return View(inventory);
         }
 
-        // POST: Inventory/DeleteConfirmed/5
+        // POST: Inventory/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -167,7 +168,6 @@ namespace PaternosterDemo.Controllers
             var inventory = await _context.Inventories.FindAsync(id);
             if (inventory != null)
             {
-                // log negative transaction
                 _context.Transactions.Add(new Transaction
                 {
                     InventoryId = inventory.InventoryId,
