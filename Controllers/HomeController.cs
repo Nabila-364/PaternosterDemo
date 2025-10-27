@@ -1,31 +1,34 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using PaternosterDemo.Models;
+using Microsoft.EntityFrameworkCore;
+using PaternosterDemo.Data;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
-namespace PaternosterDemo.Controllers;
-
-public class HomeController : Controller
+namespace PaternosterDemo.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
+        private readonly AppDbContext _context;
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+        public HomeController(AppDbContext context)
+        {
+            _context = context;
+        }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+        public async Task<IActionResult> Index()
+        {
+            var userRole = HttpContext.Session.GetString("Role") ?? "Gast";
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var dashboardData = new
+            {
+                PartCount = await _context.Parts.CountAsync(),
+                InventoryCount = await _context.Inventories.SumAsync(i => (int?)i.Quantity) ?? 0,
+                CabinetCount = await _context.Cabinets.CountAsync(),
+                UserCount = userRole == "Admin" ? await _context.Users.CountAsync() : (int?)null,
+                Role = userRole
+            };
+
+            return View(dashboardData);
+        }
     }
 }

@@ -1,8 +1,75 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
+    var role = Model.Role as string;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">📊 Paternoster Systeem Dashboard</h1>
+
+    <div class="row text-center">
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Onderdelen</h5>
+                    <p class="display-5 fw-bold">@Model.PartCount</p>
+                    <p class="text-muted">Unieke onderdelen in systeem</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-success">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Voorraad</h5>
+                    <p class="display-5 fw-bold">@Model.InventoryCount</p>
+                    <p class="text-muted">Totaal aantal items in voorraad</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-warning">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">Paternoster Kasten</h5>
+                    <p class="display-5 fw-bold">@Model.CabinetCount</p>
+                    <p class="text-muted">Actieve kasten geregistreerd</p>
+                </div>
+            </div>
+        </div>
+
+        @if (role == "Admin")
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card shadow-sm border-danger">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">Gebruikers</h5>
+                        <p class="display-5 fw-bold">@Model.UserCount</p>
+                        <p class="text-muted">Totaal geregistreerde accounts</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/Inventory" class="btn btn-primary btn-lg me-2">📦 Bekijk Voorraad</a>
+        <a href="/Parts" class="btn btn-outline-secondary btn-lg me-2">⚙️ Onderdelen</a>
+        <a href="/Cabinets" class="btn btn-outline-warning btn-lg me-2">🗄️ Kasten</a>
+
+        @if (role == "Admin")
+        {
+            <a href="/Users" class="btn btn-outline-danger btn-lg">👥 Gebruikers</a>
+        }
+    </div>
 </div>
+
+<style>
+    .card {
+        border-radius: 20px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 8px 20px rgba(0,0,0,0.1);
+    }
+</style>
