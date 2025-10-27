@@ -15,6 +15,13 @@
     <link rel="stylesheet" href="~/PaternosterDemo.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger text-center mb-0">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
     @{
         // Veilig ophalen van session
         var session = HttpContextAccessor?.HttpContext?.Session;
