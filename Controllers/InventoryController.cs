@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PaternosterDemo.Data;
@@ -62,11 +62,9 @@ namespace PaternosterDemo.Controllers
 
             if (ModelState.IsValid)
             {
-                // Eerst Inventory toevoegen
                 _context.Inventories.Add(inventory);
-                await _context.SaveChangesAsync(); // InventoryId wordt nu gegenereerd
+                await _context.SaveChangesAsync();
 
-                // Daarna Transaction toevoegen
                 _context.Transactions.Add(new Transaction
                 {
                     InventoryId = inventory.InventoryId,
@@ -145,7 +143,12 @@ namespace PaternosterDemo.Controllers
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             if (!userId.HasValue) return RedirectToAction("Login", "Account");
-            if (HttpContext.Session.GetString("Role") != "Admin") return RedirectToAction("AccessDenied", "Account");
+
+            if (HttpContext.Session.GetString("Role") != "Admin")
+            {
+                TempData["Error"] = "U bent niet geautoriseerd om dit te verwijderen."; // popup melding
+                return RedirectToAction(nameof(Index));
+            }
 
             if (id == null) return NotFound();
             var inventory = await _context.Inventories
@@ -156,14 +159,19 @@ namespace PaternosterDemo.Controllers
             return View(inventory);
         }
 
-        // POST: Inventory/Delete/5
+        // POST: Inventory/Delete/5 ✅ FIXED
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             if (!userId.HasValue) return RedirectToAction("Login", "Account");
-            if (HttpContext.Session.GetString("Role") != "Admin") return RedirectToAction("AccessDenied", "Account");
+
+            if (HttpContext.Session.GetString("Role") != "Admin")
+            {
+                TempData["Error"] = "U bent niet geautoriseerd om dit te verwijderen."; // popup melding
+                return RedirectToAction(nameof(Index));
+            }
 
             var inventory = await _context.Inventories.FindAsync(id);
             if (inventory != null)
@@ -178,7 +186,9 @@ namespace PaternosterDemo.Controllers
 
                 _context.Inventories.Remove(inventory);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "Item succesvol verwijderd."; // popup melding
             }
+
             return RedirectToAction(nameof(Index));
         }
 

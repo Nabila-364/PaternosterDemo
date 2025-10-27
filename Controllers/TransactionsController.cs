@@ -20,9 +20,9 @@ namespace PaternosterDemo.Controllers
         {
             var transactions = await _context.Transactions
                 .Include(t => t.Inventory)
-                    .ThenInclude(i => i.Part!)
+                    .ThenInclude(i => i!.Part!)
                 .Include(t => t.Inventory)
-                    .ThenInclude(i => i.Cabinet!)
+                    .ThenInclude(i => i!.Cabinet!)
                 .Include(t => t.User!)
                 .OrderByDescending(t => t.Timestamp)
                 .ToListAsync();

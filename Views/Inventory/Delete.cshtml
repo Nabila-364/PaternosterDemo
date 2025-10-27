@@ -1,29 +1,34 @@
 @model PaternosterDemo.Models.Inventory
 
 @{
-    ViewData["Title"] = "Verwijder voorraad";
+    ViewData["Title"] = "Verwijderen";
 }
 
-<h1>Verwijder voorraad</h1>
-
-<h3>Weet je zeker dat je deze voorraad wilt verwijderen?</h3>
-
-<div>
+<div class="container mt-5">
+    <h3 class="text-danger">Weet u zeker dat u dit item wilt verwijderen?</h3>
+    <hr />
     <dl class="row">
-        <dt class="col-sm-2">Onderdeel</dt>
-        <dd class="col-sm-10">@Model.Part?.Name</dd>
+        <dt class="col-sm-3">Onderdeel</dt>
+        <dd class="col-sm-9">@Model.Part?.Name</dd>
 
-        <dt class="col-sm-2">Kast</dt>
-        <dd class="col-sm-10">@Model.Cabinet?.CabinetNumber</dd>
+        <dt class="col-sm-3">Kast</dt>
+        <dd class="col-sm-9">@Model.Cabinet?.CabinetNumber</dd>
 
-        <dt class="col-sm-2">Aantal</dt>
-        <dd class="col-sm-10">@Model.Quantity</dd>
+        <dt class="col-sm-3">Aantal</dt>
+        <dd class="col-sm-9">@Model.Quantity</dd>
     </dl>
+
+    <form asp-action="Delete" method="post" onsubmit="return confirmDelete();">
+        <input type="hidden" asp-for="InventoryId" />
+        <button type="submit" class="btn btn-danger">Ja, verwijderen</button>
+        <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
+    </form>
 </div>
 
-<form asp-action="DeleteConfirmed" method="post">
-    @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="InventoryId" />
-    <button type="submit" class="btn btn-danger">Verwijder</button>
-    <a class="btn btn-secondary" asp-action="Index">Annuleren</a>
-</form>
+@section Scripts {
+    <script>
+        function confirmDelete() {
+            return confirm('Weet u zeker dat u dit item wilt verwijderen?');
+        }
+    </script>
+}
