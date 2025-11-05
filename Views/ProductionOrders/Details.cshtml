@@ -1,6 +1,39 @@
-﻿namespace PaternosterDemo.Views.ProductionOrders
-{
-    public class Details
-    {
-    }
+﻿@model PaternosterDemo.Models.ProductionOrder
+@{
+    ViewData["Title"] = "Order Details";
 }
+
+<h2>Order Details</h2>
+
+<div class="mb-3">
+    <strong>OrderId:</strong> @Model.OrderId
+</div>
+<div class="mb-3">
+    <strong>Datum:</strong> @Model.Date.ToString("dd/MM/yyyy")
+</div>
+<div class="mb-3">
+    <strong>Status:</strong> @Model.Status
+</div>
+
+<h4>Onderdelen</h4>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Onderdeel</th>
+            <th>Aantal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var op in Model.ProductionOrderParts)
+        {
+            <tr>
+                <td>@op.Part.Name</td>
+                <td>@op.Quantity</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    <a class="btn btn-secondary" asp-action="Index">Terug naar lijst</a>
+</p>

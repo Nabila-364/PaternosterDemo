@@ -5,18 +5,28 @@ namespace PaternosterDemo.Models
 {
     public class Bin
     {
-        [Key] // <-- dit is belangrijk
+        [Key]
         public int BinId { get; set; }
 
         [Required]
+        [ForeignKey("Shelf")]
         public int ShelfId { get; set; }
-        public Shelf Shelf { get; set; }  // navigatie property
 
         [Required]
+        [ForeignKey("Part")]
         public int PartId { get; set; }
-        public Part Part { get; set; } // navigatie property
 
-        [Required]
         public int Quantity { get; set; }
+
+        // Navigatieproperties
+        public Shelf Shelf { get; set; }
+        public Part Part { get; set; }
+
+        public void UpdateContents(int amount)
+        {
+            if (Quantity + amount < 0)
+                throw new System.Exception("Niet genoeg voorraad beschikbaar");
+            Quantity += amount;
+        }
     }
 }

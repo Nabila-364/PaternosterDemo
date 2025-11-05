@@ -1,6 +1,24 @@
-﻿namespace PaternosterDemo.Views.ProductionOrders
-{
-    public class Delete
-    {
-    }
+﻿@model PaternosterDemo.Models.ProductionOrder
+@{
+    ViewData["Title"] = "Verwijder Productieorder";
 }
+
+<h2>Verwijder Productieorder</h2>
+
+<h3>Weet je zeker dat je deze order wilt verwijderen?</h3>
+
+<div>
+    <strong>OrderId:</strong> @Model.OrderId
+</div>
+<div>
+    <strong>Datum:</strong> @Model.Date.ToString("dd/MM/yyyy")
+</div>
+<div>
+    <strong>Status:</strong> @Model.Status
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="OrderId" />
+    <button type="submit" class="btn btn-danger">Verwijder</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
+</form>
