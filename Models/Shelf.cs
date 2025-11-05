@@ -16,7 +16,7 @@ namespace PaternosterDemo.Models
         public int MaxBins { get; set; }
 
         // Navigatieproperty naar parent Cabinet
-        public Cabinet Cabinet { get; set; }
+        public Cabinet Cabinet { get; set; } = null!;
 
         // Navigatieproperty naar Bins
         public List<Bin> Bins { get; set; } = new List<Bin>();

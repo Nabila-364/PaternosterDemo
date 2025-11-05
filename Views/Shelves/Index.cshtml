@@ -1,6 +1,31 @@
-﻿namespace PaternosterDemo.Views.Shelves
-{
-    public class Index
-    {
-    }
-}
+﻿@model IEnumerable<PaternosterDemo.Models.Shelf>
+
+<h2>Shelves</h2>
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New Shelf</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Cabinet</th>
+            <th>Max Bins</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ShelfId</td>
+                <td>@item.Cabinet?.Name</td>
+                <td>@item.MaxBins</td>
+                <td>
+                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.ShelfId">Details</a>
+                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.ShelfId">Edit</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.ShelfId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

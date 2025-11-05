@@ -13,6 +13,10 @@ namespace PaternosterDemo.Models
         [Required]
         public string Location { get; set; } = null!;
 
+        public string Name { get; set; } 
+
+        public ICollection<Shelf> Shelves { get; set; } = new List<Shelf>();
+
         public int Capacity { get; set; }
 
         public ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();

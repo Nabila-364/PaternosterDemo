@@ -20,9 +20,9 @@ namespace PaternosterDemo.Controllers
         public async Task<IActionResult> Index()
         {
             var bins = await _context.Bins
+                                     .Include(b => b.Part)
                                      .Include(b => b.Shelf)
                                      .ThenInclude(s => s.Cabinet)
-                                     .Include(b => b.Part)
                                      .ToListAsync();
             return View(bins);
         }
@@ -33,9 +33,9 @@ namespace PaternosterDemo.Controllers
             if (id == null) return NotFound();
 
             var bin = await _context.Bins
+                                    .Include(b => b.Part)
                                     .Include(b => b.Shelf)
                                     .ThenInclude(s => s.Cabinet)
-                                    .Include(b => b.Part)
                                     .FirstOrDefaultAsync(b => b.BinId == id);
 
             if (bin == null) return NotFound();
@@ -45,8 +45,8 @@ namespace PaternosterDemo.Controllers
         // GET: Bins/Create
         public IActionResult Create()
         {
-            ViewData["Shelves"] = _context.Shelves.Include(s => s.Cabinet).ToList();
             ViewData["Parts"] = _context.Parts.ToList();
+            ViewData["Shelves"] = _context.Shelves.Include(s => s.Cabinet).ToList();
             return View();
         }
 
@@ -57,8 +57,8 @@ namespace PaternosterDemo.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewData["Shelves"] = _context.Shelves.Include(s => s.Cabinet).ToList();
                 ViewData["Parts"] = _context.Parts.ToList();
+                ViewData["Shelves"] = _context.Shelves.Include(s => s.Cabinet).ToList();
                 return View(bin);
             }
 
@@ -75,8 +75,8 @@ namespace PaternosterDemo.Controllers
             var bin = await _context.Bins.FindAsync(id);
             if (bin == null) return NotFound();
 
-            ViewData["Shelves"] = _context.Shelves.Include(s => s.Cabinet).ToList();
             ViewData["Parts"] = _context.Parts.ToList();
+            ViewData["Shelves"] = _context.Shelves.Include(s => s.Cabinet).ToList();
             return View(bin);
         }
 
@@ -89,8 +89,8 @@ namespace PaternosterDemo.Controllers
 
             if (!ModelState.IsValid)
             {
-                ViewData["Shelves"] = _context.Shelves.Include(s => s.Cabinet).ToList();
                 ViewData["Parts"] = _context.Parts.ToList();
+                ViewData["Shelves"] = _context.Shelves.Include(s => s.Cabinet).ToList();
                 return View(bin);
             }
 
@@ -105,9 +105,9 @@ namespace PaternosterDemo.Controllers
             if (id == null) return NotFound();
 
             var bin = await _context.Bins
+                                    .Include(b => b.Part)
                                     .Include(b => b.Shelf)
                                     .ThenInclude(s => s.Cabinet)
-                                    .Include(b => b.Part)
                                     .FirstOrDefaultAsync(b => b.BinId == id);
 
             if (bin == null) return NotFound();

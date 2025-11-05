@@ -1,6 +1,33 @@
-﻿namespace PaternosterDemo.Views.Bins
-{
-    public class Index
-    {
-    }
-}
+﻿@model IEnumerable<PaternosterDemo.Models.Bin>
+
+<h2>Bins</h2>
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New Bin</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>BinId</th>
+            <th>Shelf (Cabinet)</th>
+            <th>Part</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bin in Model)
+        {
+            <tr>
+                <td>@bin.BinId</td>
+                <td>@bin.Shelf?.ShelfId (@bin.Shelf?.Cabinet?.Name)</td>
+                <td>@bin.Part?.Name</td>
+                <td>@bin.Quantity</td>
+                <td>
+                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@bin.BinId">Details</a>
+                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@bin.BinId">Edit</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@bin.BinId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,6 +1,10 @@
-﻿namespace PaternosterDemo.Views.Bins
-{
-    public class Details
-    {
-    }
-}
+﻿@model PaternosterDemo.Models.Bin
+
+<h2>Bin Details</h2>
+<div>
+    <p>BinId: @Model.BinId</p>
+    <p>Shelf: @Model.Shelf?.ShelfId (@Model.Shelf?.Cabinet?.Name)</p>
+    <p>Part: @Model.Part?.Name</p>
+    <p>Quantity: @Model.Quantity</p>
+</div>
+<a asp-action="Index" class="btn btn-secondary">Back</a>

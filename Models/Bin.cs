@@ -19,8 +19,8 @@ namespace PaternosterDemo.Models
         public int Quantity { get; set; }
 
         // Navigatieproperties
-        public Shelf Shelf { get; set; }
-        public Part Part { get; set; }
+        public Shelf Shelf { get; set; } = null!;
+        public Part Part { get; set; } = null!;
 
         public void UpdateContents(int amount)
         {
