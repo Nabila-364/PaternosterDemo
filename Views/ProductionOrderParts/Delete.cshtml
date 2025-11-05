@@ -1,27 +1,24 @@
 ﻿@model PaternosterDemo.Models.ProductionOrderPart
 
 @{
-    ViewData["Title"] = "Verwijder Productie Order Onderdeel";
+    ViewData["Title"] = "Delete Production Order Part";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>Delete</h2>
 
-<div class="alert alert-warning">
-    Weet je zeker dat je dit onderdeel wilt verwijderen?
-</div>
+<dl class="row">
+    <dt class="col-sm-2">Order ID</dt>
+    <dd class="col-sm-10">@Model.ProductionOrderId</dd>
 
-<div class="mb-3">
-    <strong>Order Id:</strong> @Model.ProductionOrderOrderId
-</div>
-<div class="mb-3">
-    <strong>Onderdeel:</strong> @Model.Part?.Name
-</div>
-<div class="mb-3">
-    <strong>Aantal:</strong> @Model.Quantity
-</div>
+    <dt class="col-sm-2">Part</dt>
+    <dd class="col-sm-10">@Model.Part?.Name</dd>
 
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Verwijderen</button>
-    <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
+    <dt class="col-sm-2">Quantity</dt>
+    <dd class="col-sm-10">@Model.Quantity</dd>
+</dl>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="ProductionOrderPartId" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>

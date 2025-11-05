@@ -8,16 +8,18 @@
 
 <form asp-action="Create" method="post">
     <div class="mb-3">
-        <label asp-for="ProductionOrderOrderId" class="form-label">Production Order</label>
-        <select asp-for="ProductionOrderOrderId" class="form-select" asp-items="@(new SelectList(ViewData["Orders"] as List<PaternosterDemo.Models.ProductionOrder>, "OrderId", "OrderId"))">
+        <label asp-for="ProductionOrderId" class="form-label">Production Order</label>
+        <select asp-for="ProductionOrderId" class="form-select"
+                asp-items="@(new SelectList(ViewData["Orders"] as List<PaternosterDemo.Models.ProductionOrder>, "ProductionOrderId", "ProductionOrderId"))">
             <option value="">-- Select Order --</option>
         </select>
-        <span asp-validation-for="ProductionOrderOrderId" class="text-danger"></span>
+        <span asp-validation-for="ProductionOrderId" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="PartId" class="form-label">Part</label>
-        <select asp-for="PartId" class="form-select" asp-items="@(new SelectList(ViewData["Parts"] as List<PaternosterDemo.Models.Part>, "PartId", "Name"))">
+        <select asp-for="PartId" class="form-select"
+                asp-items="@(new SelectList(ViewData["Parts"] as List<PaternosterDemo.Models.Part>, "PartId", "Name"))">
             <option value="">-- Select Part --</option>
         </select>
         <span asp-validation-for="PartId" class="text-danger"></span>

@@ -1,13 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PaternosterDemo.Models
 {
     public class ProductionOrderPart
     {
-        public int Id { get; set; }
+        [Key]
+        [Column("Id")]  // bestaande kolom in DB
+        public int ProductionOrderPartId { get; set; }
 
+        [Column("ProductionOrderOrderId")]  // bestaande kolom in DB
         [Display(Name = "Order")]
-        public int ProductionOrderOrderId { get; set; }
+        public int ProductionOrderId { get; set; }
 
         [Display(Name = "Part")]
         public int PartId { get; set; }
@@ -16,7 +20,7 @@ namespace PaternosterDemo.Models
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
         public int Quantity { get; set; }
 
-        // Maak navigatie properties nullable
+        // Navigatie properties
         public ProductionOrder? ProductionOrder { get; set; }
         public Part? Part { get; set; }
     }

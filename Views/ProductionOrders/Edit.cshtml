@@ -1,23 +1,26 @@
 ﻿@model PaternosterDemo.Models.ProductionOrder
+
 @{
-    ViewData["Title"] = "Bewerk Productieorder";
+    ViewData["Title"] = "Edit Productieorder";
 }
 
-<h2>Bewerk Productieorder</h2>
+<h2>Edit Productieorder</h2>
 
 <form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="OrderId" />
+    <input type="hidden" asp-for="ProductionOrderId" />
 
     <div class="mb-3">
         <label asp-for="Date" class="form-label"></label>
         <input asp-for="Date" class="form-control" type="date" />
         <span asp-validation-for="Date" class="text-danger"></span>
     </div>
+
     <div class="mb-3">
         <label asp-for="Status" class="form-label"></label>
         <input asp-for="Status" class="form-control" />
         <span asp-validation-for="Status" class="text-danger"></span>
     </div>
+
     <button type="submit" class="btn btn-primary">Opslaan</button>
     <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
 </form>

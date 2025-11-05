@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PaternosterDemo.Data;
 using PaternosterDemo.Models;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PaternosterDemo.Controllers
@@ -20,11 +19,12 @@ namespace PaternosterDemo.Controllers
         // GET: ProductionOrderParts
         public async Task<IActionResult> Index()
         {
-            var parts = await _context.ProductionOrderParts
-                                      .Include(p => p.Part)
-                                      .Include(p => p.ProductionOrder)
-                                      .ToListAsync();
-            return View(parts);
+            var productionOrderParts = await _context.ProductionOrderParts
+                .Include(p => p.Part)
+                .Include(p => p.ProductionOrder)
+                .ToListAsync();
+
+            return View(productionOrderParts);
         }
 
         // GET: ProductionOrderParts/Details/5
@@ -32,21 +32,21 @@ namespace PaternosterDemo.Controllers
         {
             if (id == null) return NotFound();
 
-            var part = await _context.ProductionOrderParts
-                                     .Include(p => p.Part)
-                                     .Include(p => p.ProductionOrder)
-                                     .FirstOrDefaultAsync(p => p.Id == id);
+            var productionOrderPart = await _context.ProductionOrderParts
+                .Include(p => p.Part)
+                .Include(p => p.ProductionOrder)
+                .FirstOrDefaultAsync(m => m.ProductionOrderPartId == id);
 
-            if (part == null) return NotFound();
+            if (productionOrderPart == null) return NotFound();
 
-            return View(part);
+            return View(productionOrderPart);
         }
 
         // GET: ProductionOrderParts/Create
         public IActionResult Create()
         {
             ViewData["Parts"] = new SelectList(_context.Parts, "PartId", "Name");
-            ViewData["Orders"] = new SelectList(_context.ProductionOrders, "OrderId", "OrderId");
+            ViewData["Orders"] = new SelectList(_context.ProductionOrders, "ProductionOrderId", "ProductionOrderId");
             return View();
         }
 
@@ -55,16 +55,16 @@ namespace PaternosterDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductionOrderPart productionOrderPart)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                ViewData["Parts"] = new SelectList(_context.Parts, "PartId", "Name", productionOrderPart.PartId);
-                ViewData["Orders"] = new SelectList(_context.ProductionOrders, "OrderId", "OrderId", productionOrderPart.ProductionOrderOrderId);
-                return View(productionOrderPart);
+                _context.Add(productionOrderPart);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
 
-            _context.Add(productionOrderPart);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            ViewData["Parts"] = new SelectList(_context.Parts, "PartId", "Name", productionOrderPart.PartId);
+            ViewData["Orders"] = new SelectList(_context.ProductionOrders, "ProductionOrderId", "ProductionOrderId", productionOrderPart.ProductionOrderId);
+            return View(productionOrderPart);
         }
 
         // GET: ProductionOrderParts/Edit/5
@@ -72,12 +72,12 @@ namespace PaternosterDemo.Controllers
         {
             if (id == null) return NotFound();
 
-            var part = await _context.ProductionOrderParts.FindAsync(id);
-            if (part == null) return NotFound();
+            var productionOrderPart = await _context.ProductionOrderParts.FindAsync(id);
+            if (productionOrderPart == null) return NotFound();
 
-            ViewData["Parts"] = new SelectList(_context.Parts, "PartId", "Name", part.PartId);
-            ViewData["Orders"] = new SelectList(_context.ProductionOrders, "OrderId", "OrderId", part.ProductionOrderOrderId);
-            return View(part);
+            ViewData["Parts"] = new SelectList(_context.Parts, "PartId", "Name", productionOrderPart.PartId);
+            ViewData["Orders"] = new SelectList(_context.ProductionOrders, "ProductionOrderId", "ProductionOrderId", productionOrderPart.ProductionOrderId);
+            return View(productionOrderPart);
         }
 
         // POST: ProductionOrderParts/Edit/5
@@ -85,18 +85,28 @@ namespace PaternosterDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ProductionOrderPart productionOrderPart)
         {
-            if (id != productionOrderPart.Id) return NotFound();
+            if (id != productionOrderPart.ProductionOrderPartId) return NotFound();
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                ViewData["Parts"] = new SelectList(_context.Parts, "PartId", "Name", productionOrderPart.PartId);
-                ViewData["Orders"] = new SelectList(_context.ProductionOrders, "OrderId", "OrderId", productionOrderPart.ProductionOrderOrderId);
-                return View(productionOrderPart);
+                try
+                {
+                    _context.Update(productionOrderPart);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProductionOrderPartExists(productionOrderPart.ProductionOrderPartId))
+                        return NotFound();
+                    else
+                        throw;
+                }
+                return RedirectToAction(nameof(Index));
             }
 
-            _context.Update(productionOrderPart);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            ViewData["Parts"] = new SelectList(_context.Parts, "PartId", "Name", productionOrderPart.PartId);
+            ViewData["Orders"] = new SelectList(_context.ProductionOrders, "ProductionOrderId", "ProductionOrderId", productionOrderPart.ProductionOrderId);
+            return View(productionOrderPart);
         }
 
         // GET: ProductionOrderParts/Delete/5
@@ -104,14 +114,14 @@ namespace PaternosterDemo.Controllers
         {
             if (id == null) return NotFound();
 
-            var part = await _context.ProductionOrderParts
-                                     .Include(p => p.Part)
-                                     .Include(p => p.ProductionOrder)
-                                     .FirstOrDefaultAsync(p => p.Id == id);
+            var productionOrderPart = await _context.ProductionOrderParts
+                .Include(p => p.Part)
+                .Include(p => p.ProductionOrder)
+                .FirstOrDefaultAsync(m => m.ProductionOrderPartId == id);
 
-            if (part == null) return NotFound();
+            if (productionOrderPart == null) return NotFound();
 
-            return View(part);
+            return View(productionOrderPart);
         }
 
         // POST: ProductionOrderParts/Delete/5
@@ -119,13 +129,19 @@ namespace PaternosterDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var part = await _context.ProductionOrderParts.FindAsync(id);
-            if (part != null)
+            var productionOrderPart = await _context.ProductionOrderParts.FindAsync(id);
+            if (productionOrderPart != null)
             {
-                _context.ProductionOrderParts.Remove(part);
+                _context.ProductionOrderParts.Remove(productionOrderPart);
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool ProductionOrderPartExists(int id)
+        {
+            return _context.ProductionOrderParts.Any(e => e.ProductionOrderPartId == id);
         }
     }
 }

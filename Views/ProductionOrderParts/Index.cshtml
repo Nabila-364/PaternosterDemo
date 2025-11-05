@@ -1,34 +1,35 @@
 ﻿@model IEnumerable<PaternosterDemo.Models.ProductionOrderPart>
 
 @{
-    ViewData["Title"] = "Productie Order Onderdelen";
+    ViewData["Title"] = "Production Order Parts";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h1>Production Order Parts</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Nieuw onderdeel toevoegen</a>
+    <a asp-action="Create" class="btn btn-primary">Nieuwe Productieorder Part</a>
 </p>
 
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Order Id</th>
-            <th>Onderdeel</th>
-            <th>Aantal</th>
-            <th></th>
+            <th>Order ID</th>
+            <th>Part</th>
+            <th>Quantity</th>
+            <th>Acties</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.ProductionOrderOrderId</td>
+                <td>@item.ProductionOrderId</td>
                 <td>@item.Part?.Name</td>
                 <td>@item.Quantity</td>
                 <td>
-                    <a class="btn btn-sm btn-info" asp-action="Edit" asp-route-id="@item.Id">Bewerken</a>
-                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Verwijderen</a>
+                    <a asp-action="Details" asp-route-id="@item.ProductionOrderPartId">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.ProductionOrderPartId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProductionOrderPartId">Delete</a>
                 </td>
             </tr>
         }

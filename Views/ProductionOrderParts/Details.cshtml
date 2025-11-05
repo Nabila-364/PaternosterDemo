@@ -1,20 +1,20 @@
 ﻿@model PaternosterDemo.Models.ProductionOrderPart
 
 @{
-    ViewData["Title"] = "Details Productie Order Onderdeel";
+    ViewData["Title"] = "Details Production Order Part";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>Details</h2>
 
-<div class="mb-3">
-    <strong>Order Id:</strong> @Model.ProductionOrderOrderId
-</div>
-<div class="mb-3">
-    <strong>Onderdeel:</strong> @Model.Part?.Name
-</div>
-<div class="mb-3">
-    <strong>Aantal:</strong> @Model.Quantity
-</div>
+<dl class="row">
+    <dt class="col-sm-2">Order ID</dt>
+    <dd class="col-sm-10">@Model.ProductionOrderId</dd>
 
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info">Bewerken</a>
+    <dt class="col-sm-2">Part</dt>
+    <dd class="col-sm-10">@Model.Part?.Name</dd>
+
+    <dt class="col-sm-2">Quantity</dt>
+    <dd class="col-sm-10">@Model.Quantity</dd>
+</dl>
+
 <a asp-action="Index" class="btn btn-secondary">Terug</a>

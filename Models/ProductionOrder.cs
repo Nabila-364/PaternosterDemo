@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PaternosterDemo.Models
 {
     public class ProductionOrder
     {
         [Key]
-        public int OrderId { get; set; }
+        [Column("OrderId")]  // bestaande kolom in DB
+        public int ProductionOrderId { get; set; }
 
         [Required]
         public DateTime Date { get; set; } = DateTime.Now;
 
         [Required]
         [StringLength(50)]
-        public string Status { get; set; } = "Open"; // Open, InProgress, Completed, etc.
+        public string Status { get; set; } = "Open";
 
         // Navigatieproperty naar onderdelen
         public List<ProductionOrderPart> ProductionOrderParts { get; set; } = new List<ProductionOrderPart>();
@@ -29,7 +31,7 @@ namespace PaternosterDemo.Models
             {
                 PartId = part.PartId,
                 Quantity = quantity,
-                ProductionOrderOrderId = OrderId
+                ProductionOrderId = this.ProductionOrderId
             });
         }
     }

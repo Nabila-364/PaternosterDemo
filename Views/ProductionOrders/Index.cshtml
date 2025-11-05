@@ -1,18 +1,19 @@
 ﻿@model IEnumerable<PaternosterDemo.Models.ProductionOrder>
+
 @{
     ViewData["Title"] = "Productieorders";
 }
 
-<h2>Productieorders</h2>
+<h1>Productieorders</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Nieuwe Order</a>
+    <a asp-action="Create" class="btn btn-primary">Nieuwe Productieorder</a>
 </p>
 
-<table class="table table-bordered">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>OrderId</th>
+            <th>Order ID</th>
             <th>Date</th>
             <th>Status</th>
             <th>Acties</th>
@@ -22,13 +23,13 @@
         @foreach (var order in Model)
         {
             <tr>
-                <td>@order.OrderId</td>
-                <td>@order.Date.ToString("dd/MM/yyyy")</td>
+                <td>@order.ProductionOrderId</td>
+                <td>@order.Date.ToShortDateString()</td>
                 <td>@order.Status</td>
                 <td>
-                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@order.OrderId">Details</a>
-                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@order.OrderId">Bewerk</a>
-                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@order.OrderId">Verwijder</a>
+                    <a asp-action="Details" asp-route-id="@order.ProductionOrderId">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@order.ProductionOrderId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@order.ProductionOrderId">Delete</a>
                 </td>
             </tr>
         }

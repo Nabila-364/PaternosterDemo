@@ -34,7 +34,7 @@ namespace PaternosterDemo.Controllers
             var order = await _context.ProductionOrders
                                       .Include(o => o.ProductionOrderParts)
                                       .ThenInclude(p => p.Part)
-                                      .FirstOrDefaultAsync(o => o.OrderId == id);
+                                      .FirstOrDefaultAsync(o => o.ProductionOrderId == id);
 
             if (order == null) return NotFound();
 
@@ -72,7 +72,7 @@ namespace PaternosterDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ProductionOrder order)
         {
-            if (id != order.OrderId) return NotFound();
+            if (id != order.ProductionOrderId) return NotFound();
             if (!ModelState.IsValid) return View(order);
 
             _context.Update(order);
