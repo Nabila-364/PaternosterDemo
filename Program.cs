@@ -10,6 +10,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Swagger
+builder.Services.AddEndpointsApiExplorer();  // Voeg dit toe
+builder.Services.AddSwaggerGen();            // Voeg dit toe
+
 // Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -19,7 +23,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Zorg dat IHttpContextAccessor geïnjecteerd kan worden in views/layout
+// IHttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
@@ -29,6 +33,13 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
+}
+
+// Swagger middleware alleen in development
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();                // Voeg dit toe
+    app.UseSwaggerUI();              // Voeg dit toe
 }
 
 app.UseHttpsRedirection();
