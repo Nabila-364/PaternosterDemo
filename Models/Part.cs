@@ -8,6 +8,7 @@ namespace PaternosterDemo.Models
         public string? ArticleNumber { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
+        public int MinimumStock { get; set; }
         public ICollection<Inventory>? Inventories { get; set; }
         public ICollection<Transaction>? Transactions { get; set; }
     }
