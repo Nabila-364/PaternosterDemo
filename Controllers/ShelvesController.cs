@@ -10,11 +10,7 @@ namespace PaternosterDemo.Controllers
     public class ShelvesController : Controller
     {
         private readonly AppDbContext _context;
-
-        public ShelvesController(AppDbContext context)
-        {
-            _context = context;
-        }
+        public ShelvesController(AppDbContext context) => _context = context;
 
         // GET: Shelves
         public async Task<IActionResult> Index()
@@ -23,23 +19,10 @@ namespace PaternosterDemo.Controllers
             return View(shelves);
         }
 
-        // GET: Shelves/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var shelf = await _context.Shelves
-                                      .Include(s => s.Cabinet)
-                                      .FirstOrDefaultAsync(s => s.ShelfId == id);
-
-            if (shelf == null) return NotFound();
-            return View(shelf);
-        }
-
         // GET: Shelves/Create
         public IActionResult Create()
         {
-            ViewData["Cabinets"] = _context.Cabinets.ToList();
+            ViewData["CabinetId"] = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(_context.Cabinets, "CabinetId", "CabinetNumber");
             return View();
         }
 
@@ -50,7 +33,7 @@ namespace PaternosterDemo.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewData["Cabinets"] = _context.Cabinets.ToList();
+                ViewData["CabinetId"] = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(_context.Cabinets, "CabinetId", "CabinetNumber", shelf.CabinetId);
                 return View(shelf);
             }
 
@@ -67,7 +50,7 @@ namespace PaternosterDemo.Controllers
             var shelf = await _context.Shelves.FindAsync(id);
             if (shelf == null) return NotFound();
 
-            ViewData["Cabinets"] = _context.Cabinets.ToList();
+            ViewData["CabinetId"] = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(_context.Cabinets, "CabinetId", "CabinetNumber", shelf.CabinetId);
             return View(shelf);
         }
 
@@ -77,10 +60,9 @@ namespace PaternosterDemo.Controllers
         public async Task<IActionResult> Edit(int id, Shelf shelf)
         {
             if (id != shelf.ShelfId) return NotFound();
-
             if (!ModelState.IsValid)
             {
-                ViewData["Cabinets"] = _context.Cabinets.ToList();
+                ViewData["CabinetId"] = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(_context.Cabinets, "CabinetId", "CabinetNumber", shelf.CabinetId);
                 return View(shelf);
             }
 
@@ -94,11 +76,9 @@ namespace PaternosterDemo.Controllers
         {
             if (id == null) return NotFound();
 
-            var shelf = await _context.Shelves
-                                      .Include(s => s.Cabinet)
-                                      .FirstOrDefaultAsync(s => s.ShelfId == id);
-
+            var shelf = await _context.Shelves.Include(s => s.Cabinet).FirstOrDefaultAsync(s => s.ShelfId == id);
             if (shelf == null) return NotFound();
+
             return View(shelf);
         }
 
@@ -113,6 +93,7 @@ namespace PaternosterDemo.Controllers
                 _context.Shelves.Remove(shelf);
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Index));
         }
     }
