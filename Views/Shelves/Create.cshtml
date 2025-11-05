@@ -1,32 +1,41 @@
 ﻿@model PaternosterDemo.Models.Shelf
 
 @{
-    ViewData["Title"] = "Create Shelf";
+    ViewData["Title"] = "Nieuw Schap";
 }
 
-<h1>Create Shelf</h1>
+<h1>Nieuw Schap</h1>
 
 <form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
     <div class="mb-3">
-        <label asp-for="CabinetId" class="form-label">Cabinet</label>
-        <select asp-for="CabinetId" class="form-select" asp-items="@(new SelectList(ViewData["Cabinets"] as List<PaternosterDemo.Models.Cabinet>, "CabinetId", "Name"))">
-            <option value="">-- Select Cabinet --</option>
-        </select>
+        <label>Kast</label>
+        <select asp-for="CabinetId" asp-items="ViewBag.CabinetId" class="form-control"></select>
         <span asp-validation-for="CabinetId" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="MaxBins" class="form-label"></label>
-        <input asp-for="MaxBins" class="form-control" />
+        <label>Schapnummer</label>
+        <input asp-for="ShelfNumber" class="form-control" />
+        <span asp-validation-for="ShelfNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Maximaal Gewicht</label>
+        <input asp-for="MaxWeight" type="number" class="form-control" />
+        <span asp-validation-for="MaxWeight" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label>Maximale Bins</label>
+        <input asp-for="MaxBins" type="number" class="form-control" />
         <span asp-validation-for="MaxBins" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <button type="submit" class="btn btn-success">Opslaan</button>
+    <a class="btn btn-secondary" asp-action="Index">Annuleren</a>
 </form>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }
