@@ -1,28 +1,26 @@
 ﻿@model PaternosterDemo.Models.ProductionOrderPart
 
 @{
-    ViewData["Title"] = "Add Part to Production Order";
-    var parts = ViewData["Parts"] as List<PaternosterDemo.Models.Part>;
-    var orders = ViewData["Orders"] as List<PaternosterDemo.Models.ProductionOrder>;
+    ViewData["Title"] = "Create Production Order Part";
 }
 
-<h1>Add Part to Production Order</h1>
+<h1>Create Production Order Part</h1>
 
 <form asp-action="Create" method="post">
     <div class="mb-3">
-        <label asp-for="PartId" class="form-label">Part</label>
-        <select asp-for="PartId" class="form-select" asp-items="@(new SelectList(parts, "PartId", "Name"))">
-            <option value="">-- Select Part --</option>
-        </select>
-        <span asp-validation-for="PartId" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="ProductionOrderOrderId" class="form-label">Order</label>
-        <select asp-for="ProductionOrderOrderId" class="form-select" asp-items="@(new SelectList(orders, "OrderId", "OrderId"))">
+        <label asp-for="ProductionOrderOrderId" class="form-label">Production Order</label>
+        <select asp-for="ProductionOrderOrderId" class="form-select" asp-items="@(new SelectList(ViewData["Orders"] as List<PaternosterDemo.Models.ProductionOrder>, "OrderId", "OrderId"))">
             <option value="">-- Select Order --</option>
         </select>
         <span asp-validation-for="ProductionOrderOrderId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PartId" class="form-label">Part</label>
+        <select asp-for="PartId" class="form-select" asp-items="@(new SelectList(ViewData["Parts"] as List<PaternosterDemo.Models.Part>, "PartId", "Name"))">
+            <option value="">-- Select Part --</option>
+        </select>
+        <span asp-validation-for="PartId" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
@@ -32,7 +30,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Create</button>
-    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </form>
 
 @section Scripts {

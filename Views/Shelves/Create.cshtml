@@ -1,6 +1,32 @@
-﻿namespace PaternosterDemo.Views.Shelves
-{
-    public class Create
-    {
+﻿@model PaternosterDemo.Models.Shelf
+
+@{
+    ViewData["Title"] = "Create Shelf";
+}
+
+<h1>Create Shelf</h1>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="CabinetId" class="form-label">Cabinet</label>
+        <select asp-for="CabinetId" class="form-select" asp-items="@(new SelectList(ViewData["Cabinets"] as List<PaternosterDemo.Models.Cabinet>, "CabinetId", "Name"))">
+            <option value="">-- Select Cabinet --</option>
+        </select>
+        <span asp-validation-for="CabinetId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MaxBins" class="form-label"></label>
+        <input asp-for="MaxBins" class="form-control" />
+        <span asp-validation-for="MaxBins" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }

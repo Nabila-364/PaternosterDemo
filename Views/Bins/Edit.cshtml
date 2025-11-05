@@ -1,6 +1,42 @@
-﻿namespace PaternosterDemo.Views.Bins
-{
-    public class Edit
-    {
+﻿@model PaternosterDemo.Models.Bin
+
+@{
+    ViewData["Title"] = "Edit Bin";
+}
+
+<h1>Edit Bin</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="BinId" />
+
+    <div class="mb-3">
+        <label asp-for="ShelfId" class="form-label">Shelf</label>
+        <select asp-for="ShelfId" class="form-select" asp-items="@(new SelectList(ViewData["Shelves"] as List<PaternosterDemo.Models.Shelf>, "ShelfId", "ShelfDisplay", Model.ShelfId))">
+            <option value="">-- Select Shelf --</option>
+        </select>
+        <span asp-validation-for="ShelfId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PartId" class="form-label">Part</label>
+        <select asp-for="PartId" class="form-select" asp-items="@(new SelectList(ViewData["Parts"] as List<PaternosterDemo.Models.Part>, "PartId", "Name", Model.PartId))">
+            <option value="">-- Select Part --</option>
+        </select>
+        <span asp-validation-for="PartId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Quantity" class="form-label"></label>
+        <input asp-for="Quantity" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }

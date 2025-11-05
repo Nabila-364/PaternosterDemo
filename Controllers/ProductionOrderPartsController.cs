@@ -45,7 +45,8 @@ namespace PaternosterDemo.Controllers
         // GET: ProductionOrderParts/Create
         public IActionResult Create()
         {
-            PopulateDropDowns();
+            ViewData["Parts"] = new SelectList(_context.Parts, "PartId", "Name");
+            ViewData["Orders"] = new SelectList(_context.ProductionOrders, "OrderId", "OrderId");
             return View();
         }
 
@@ -56,7 +57,8 @@ namespace PaternosterDemo.Controllers
         {
             if (!ModelState.IsValid)
             {
-                PopulateDropDowns();
+                ViewData["Parts"] = new SelectList(_context.Parts, "PartId", "Name", productionOrderPart.PartId);
+                ViewData["Orders"] = new SelectList(_context.ProductionOrders, "OrderId", "OrderId", productionOrderPart.ProductionOrderOrderId);
                 return View(productionOrderPart);
             }
 
@@ -73,7 +75,8 @@ namespace PaternosterDemo.Controllers
             var part = await _context.ProductionOrderParts.FindAsync(id);
             if (part == null) return NotFound();
 
-            PopulateDropDowns(part);
+            ViewData["Parts"] = new SelectList(_context.Parts, "PartId", "Name", part.PartId);
+            ViewData["Orders"] = new SelectList(_context.ProductionOrders, "OrderId", "OrderId", part.ProductionOrderOrderId);
             return View(part);
         }
 
@@ -86,7 +89,8 @@ namespace PaternosterDemo.Controllers
 
             if (!ModelState.IsValid)
             {
-                PopulateDropDowns(productionOrderPart);
+                ViewData["Parts"] = new SelectList(_context.Parts, "PartId", "Name", productionOrderPart.PartId);
+                ViewData["Orders"] = new SelectList(_context.ProductionOrders, "OrderId", "OrderId", productionOrderPart.ProductionOrderOrderId);
                 return View(productionOrderPart);
             }
 
@@ -122,13 +126,6 @@ namespace PaternosterDemo.Controllers
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
-        }
-
-        // Hulpmethode om dropdowns voor Parts en Orders te vullen
-        private void PopulateDropDowns(ProductionOrderPart selectedPart = null)
-        {
-            ViewData["Parts"] = new SelectList(_context.Parts.ToList(), "PartId", "Name", selectedPart?.PartId);
-            ViewData["Orders"] = new SelectList(_context.ProductionOrders.ToList(), "OrderId", "OrderId", selectedPart?.ProductionOrderOrderId);
         }
     }
 }
