@@ -17,8 +17,8 @@ namespace PaternosterDemo.Controllers
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             if (!userId.HasValue) return RedirectToAction("Login", "Account");
-            ViewBag.IsAdmin = HttpContext.Session.GetString("Role") == "Admin";
 
+            ViewBag.IsAdmin = HttpContext.Session.GetString("Role") == "Admin";
             return View(await _context.Cabinets.ToListAsync());
         }
 
@@ -35,7 +35,13 @@ namespace PaternosterDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Cabinet cabinet)
         {
-            if (!ModelState.IsValid) return View(cabinet);
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                              .Select(e => e.ErrorMessage);
+                ViewBag.Errors = errors;
+                return View(cabinet);
+            }
 
             _context.Add(cabinet);
             await _context.SaveChangesAsync();
@@ -45,9 +51,6 @@ namespace PaternosterDemo.Controllers
         // GET: Cabinets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (!userId.HasValue) return RedirectToAction("Login", "Account");
-
             if (id == null) return NotFound();
 
             var cabinet = await _context.Cabinets.FindAsync(id);
@@ -69,13 +72,9 @@ namespace PaternosterDemo.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Cabinets/Delete/5 (Admin only)
+        // GET: Cabinets/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (!userId.HasValue) return RedirectToAction("Login", "Account");
-            if (HttpContext.Session.GetString("Role") != "Admin") return RedirectToAction("AccessDenied", "Account");
-
             if (id == null) return NotFound();
 
             var cabinet = await _context.Cabinets.FirstOrDefaultAsync(c => c.CabinetId == id);
@@ -89,10 +88,6 @@ namespace PaternosterDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (!userId.HasValue) return RedirectToAction("Login", "Account");
-            if (HttpContext.Session.GetString("Role") != "Admin") return RedirectToAction("AccessDenied", "Account");
-
             var cabinet = await _context.Cabinets.FindAsync(id);
             if (cabinet != null)
             {

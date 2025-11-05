@@ -6,6 +6,18 @@
 
 <h1>Nieuwe kast</h1>
 
+@if (ViewBag.Errors != null)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var err in ViewBag.Errors)
+            {
+                <li>@err</li>
+            }
+        </ul>
+    </div>
+}
+
 <form asp-action="Create" method="post">
     @Html.AntiForgeryToken()
     <div class="mb-3">
@@ -22,6 +34,11 @@
         <label>Capaciteit</label>
         <input asp-for="Capacity" type="number" class="form-control" />
         <span asp-validation-for="Capacity" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label>Naam (optioneel)</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-success">Opslaan</button>
     <a class="btn btn-secondary" asp-action="Index">Annuleren</a>
