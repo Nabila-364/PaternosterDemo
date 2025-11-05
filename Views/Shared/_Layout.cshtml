@@ -2,7 +2,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,10 +44,16 @@
                     <!-- Linkerkant -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Cabinets" asp-action="Index">Kasten</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Parts" asp-action="Index">Onderdelen</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Inventory" asp-action="Index">Voorraad</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Transactions" asp-action="Index">Transacties</a></li>
+                        @if (isLoggedIn)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Cabinets" asp-action="Index">Kasten</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Shelves" asp-action="Index">Schappen</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Bins" asp-action="Index">Bakjes</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Parts" asp-action="Index">Onderdelen</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Inventory" asp-action="Index">Voorraad</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Transactions" asp-action="Index">Transacties</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="ProductionOrders" asp-action="Index">Productieorders</a></li>
+                        }
                     </ul>
 
                     <!-- Rechterkant (login/logout) -->
@@ -98,7 +104,7 @@
 
     <footer class="border-top footer text-muted mt-3 py-2 bg-light">
         <div class="container text-center">
-            
+            &copy; @DateTime.Now.Year PaternosterDemo
         </div>
     </footer>
 

@@ -84,7 +84,7 @@ namespace PaternosterDemo.Controllers
             return View(part);
         }
 
-        // POST: Parts/Delete/5
+        // POST: Parts/Delete/5dot
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

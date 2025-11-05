@@ -10,7 +10,11 @@ namespace PaternosterDemo.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Part> Parts { get; set; }
         public DbSet<Cabinet> Cabinets { get; set; }
+        public DbSet<Shelf> Shelves { get; set; }
+        public DbSet<Bin> Bins { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<ProductionOrder> ProductionOrders { get; set; }
+        public DbSet<ProductionOrderPart> ProductionOrderParts { get; set; }
     }
 }
